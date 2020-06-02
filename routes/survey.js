@@ -24,11 +24,11 @@ router.get('/:ping/:point/:totalTime', function(req, res){
 
 router.post('/:ping/:point/:totalTime', function(req, res){
     console.log('one');
-    console.log(req);
+    //console.log(req);
     var result = {"ping": req.params.ping, "point": req.params.point, "remoteTime": new Date(), "clientIP":req.headers['x-forwarded-for'] || req.connection.remoteAddress, "agent":req.get('user-agent')};
     //var result = JSON.parse(JSON.stringify(req.body));
     //var result = JSON.parse((req.body).toString());
-    console.log(result);
+    //console.log(result);
 
 
 /*    result.ping = req.params.ping;
