@@ -2,6 +2,7 @@ Agar.io Clone
 =============
 
 If you faced the error "primordials is not defined", do following steps: 
+
 1- cp npm-shrinkwrap.json.bk npm-shrinkwrap.json  
 2- npm install  
 3- npm start      
