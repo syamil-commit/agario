@@ -14,7 +14,7 @@ QUESTIONS={
 };
 
 
-router.get('', function(req, res){
+/*router.get('', function(req, res){
     console.log(req.params.l+','+req.params.ping);
     res.render('question', { title: 'Survey', questions:QUESTIONS});
 });
@@ -23,14 +23,27 @@ router.get('/', function(req, res){
     console.log(req.params.l+','+req.params.ping);
     res.render('question', { title: 'Survey', questions:QUESTIONS});
 });
-router.get(':id/:name/:l/:time/:ping', function(req, res){
-    // console.log(req.params.l+','+req.params.ping);
+router.get('/survey', function(req, res){
+    console.log(req.params.l+','+req.params.ping);
+    res.render('question', { title: 'Survey', questions:QUESTIONS});
+});
+router.get(':ping/:l/:time', function(req, res){
+    console.log(req);
+    console.log(req.params);
     res.render('question', { title: 'Survey', id: req.param.id, name:req.param.name, l: req.params.l, time:req.params.time, ping: req.param.ping, questions:QUESTIONS});
+});*/
+
+router.get('/:ping/:score/:totalTime', function(req, res){
+    console.log(req.params.ping);
+    console.log(req.params.score);
+    console.log(req.params.totalTime);
+    //console.log(req);
+    res.render('question', { title: 'Survey', ping:req.params.ping, score: req.params.score,  totalTime:req.params.totalTime, questions:QUESTIONS});
 });
 
-router.post('/:id/:name/:score/:time', function(req, res){
+router.post('/:ping/:score/:totalTime', function(req, res){
     var result = JSON.parse(JSON.stringify(req.body));
-    result.l = req.params.l;
+    result.score = req.params.score;
     result.ping = req.params.ping;
     result.remoteTime = new Date();
     result.clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;

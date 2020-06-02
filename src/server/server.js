@@ -34,13 +34,15 @@ let QUESTIONS;
 QUESTIONS={
     1: "1. Responsiveness: how responsive the game is"
 };
-app.get("/survey", (req, res) => {
+/*app.get("/survey", (req, res) => {
     //res.sendFile("/../../views/index.pug");
     //res.header('Content-Type', 'text/html');
     //res.sendFile(path.resolve('/Users/ahmad/agar.io-clone/views/test.html'));
     res.render('question', { title: 'Survey', hostname:req.params.hostname, l: req.params.l, ping:req.params.ping, totalTime:req.params.totalTime, questions:QUESTIONS});
     //res.end();
-});
+});*/
+
+
 
 app.use('/survey', surveyRouter);
 
@@ -536,20 +538,20 @@ function tickPlayer(currentPlayer) {
     if(c.finishScoreActiva == true){
         if(currentPlayer.massTotal >= c.finishScore){
             var finTime = new Date().getTime() - currentPlayer.startTime;
-            sockets[currentPlayer.id].emit('kick','You got score: '+currentPlayer.massTotal+ ' in '+ finTime+ ' ms');
+            sockets[currentPlayer.id].emit('kick','You got score: '+currentPlayer.massTotal+ ' in '+ finTime+ ' ms', currentPlayer.massTotal, finTime);
             sockets[currentPlayer.id].disconnect();
         }
     }
     if(c.finishTimeActive == true){
         if(new Date().getTime() - currentPlayer.startTime >= c.finishTime){
             var finScore = currentPlayer.massTotal;
-            sockets[currentPlayer.id].emit('kick','Time is up and You got score: '+currentPlayer.massTotal+ ' in '+ c.finishTime+' ms');
+            sockets[currentPlayer.id].emit('kick','Time is up and You got score: '+currentPlayer.massTotal+ ' in '+ c.finishTime+' ms', currentPlayer.massTotal, c.finishTime);
             sockets[currentPlayer.id].disconnect();
         }
     }
 
     if(currentPlayer.lastHeartbeat < new Date().getTime() - c.maxHeartbeatInterval) {
-        sockets[currentPlayer.id].emit('kick', 'Last heartbeat received over ' + c.maxHeartbeatInterval + ' ago.');
+        sockets[currentPlayer.id].emit('kick', 'Last heartbeat received over ' + c.maxHeartbeatInterval + ' ago.',currentPlayer.massTotal, c.finishTime);
         sockets[currentPlayer.id].disconnect();
     }
 

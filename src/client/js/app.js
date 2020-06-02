@@ -7,8 +7,10 @@ var global = require('./global');
 var playerNameInput = document.getElementById('playerNameInput');
 var socket;
 var reason;
-var clickCounter = 0;
 
+var pingInterval = 2000;
+var finScore=0;
+var finTime=0;
 
 
 var debug = function(args) {
@@ -43,7 +45,15 @@ function startGame(type) {
     window.canvas.socket = socket;
     global.socket = socket;
 
-    //////
+    //////I added
+    //window.chat.checkLatency();
+    //debug('PingLATANCY2: '+ window.chat.addChatLine('-Ping'));
+    //setupSocket(socket);
+    //debug(socket.emit('pingcheck'));
+    //window.chat.checkLatency();
+    //Promise.resolve(debug(socket.emit('pingcheck')));
+
+    //debug('PingLATANCY5: ' + global.pingLatency);
     //window.chat.checkLatency();
 }
 
@@ -65,8 +75,8 @@ function startGame(type) {
 
 function survey(){
 
+    window.open("/survey/"+global.pingLatency+"/"+finScore+"/"+finTime);
 
-        clickCounter++;
         if (!socket) {
             console.log("socket is not defined");
 
@@ -75,13 +85,12 @@ function survey(){
             window.chat.socket = socket;
         }
         //window.chat.socket = socket;
-        debug("running survey");
-        window.chat.checkLatency();
+        //debug("running survey");
+        //window.chat.checkLatency();
         //debug('PingLATANCY2: '+ window.chat.addChatLine('-Ping'));
         //setupSocket(socket);
-        debug(socket.emit('pingcheck'));
-        window.chat.checkLatency();
-        Promise.resolve(debug(socket.emit('pingcheck')));
+        //debug(socket.emit('pingcheck'));
+        //Promise.resolve(debug(socket.emit('pingcheck')));
         //debug(window.chat.socket.emit('pingcheck'));
         //debug('PingLATANCY3: '+ window.chat.addChatLine('ping'));
 
@@ -102,10 +111,12 @@ function survey(){
 function validNick() {
     var regex = /^\w*$/;
     debug('Regex Test', regex.exec(playerNameInput.value));
+
     return regex.exec(playerNameInput.value) !== null;
 }
 
 window.onload = function() {
+
 
     var btn = document.getElementById('startButton'),
         btnS = document.getElementById('spectateButton'),
@@ -117,12 +128,12 @@ window.onload = function() {
     };
 
     btnSvy.onclick = function(){
+        window.chat.checkLatency();
         survey();
-        survey();
+        //survey();
     };
 
     btn.onclick = function () {
-
         // Checks if the nick is valid.
         if (validNick()) {
             nickErrorText.style.opacity = 0;
@@ -131,6 +142,8 @@ window.onload = function() {
             nickErrorText.style.opacity = 1;
         }
     };
+    //window.chat.checkLatency();
+
 
     var settingsMenu = document.getElementById('settingsButton');
     var settings = document.getElementById('settings');
@@ -271,14 +284,17 @@ function setupSocket(socket) {
 
     socket.on('playerDied', function (data) {
         window.chat.addSystemLine('{GAME} - <b>' + (data.name.length < 1 ? 'An unnamed cell' : data.name) + '</b> was eaten.');
+
     });
 
     socket.on('playerDisconnect', function (data) {
         window.chat.addSystemLine('{GAME} - <b>' + (data.name.length < 1 ? 'An unnamed cell' : data.name) + '</b> disconnected.');
+
     });
 
     socket.on('playerJoin', function (data) {
         window.chat.addSystemLine('{GAME} - <b>' + (data.name.length < 1 ? 'An unnamed cell' : data.name) + '</b> joined.');
+
     });
 
     socket.on('leaderboard', function (data) {
@@ -353,11 +369,15 @@ function setupSocket(socket) {
         }, 2500);
     });
 
-    socket.on('kick', function (data) {
+    socket.on('kick', function (data, score, time) {
         global.gameStart = false;
         reason = data;
         global.kicked = true;
         socket.close();
+        console.log('score: '+score + ' and time: '+time);
+        finScore = score;
+        finTime = time;
+
     });
 
     socket.on('virusSplit', function (virusCell) {
@@ -367,6 +387,7 @@ function setupSocket(socket) {
 }
 
 function drawCircle(centerX, centerY, radius, sides) {
+
     var theta = 0;
     var x = 0;
     var y = 0;
@@ -383,6 +404,8 @@ function drawCircle(centerX, centerY, radius, sides) {
     graph.closePath();
     graph.stroke();
     graph.fill();
+
+
 }
 
 function drawFood(food) {
@@ -413,6 +436,12 @@ function drawFireFood(mass) {
 }
 
 function drawPlayers(order) {
+    if(Date.now() - global.gameStart > pingInterval ){
+        window.chat.checkLatency();
+        pingInterval *= 1.5;
+        //checkPing();
+    }
+
     var start = {
         x: player.x - (global.screenWidth / 2),
         y: player.y - (global.screenHeight / 2)
@@ -602,6 +631,8 @@ function animloop() {
 }
 
 function gameLoop() {
+
+
     if (global.died) {
         graph.fillStyle = '#333333';
         graph.fillRect(0, 0, global.screenWidth, global.screenHeight);
@@ -687,4 +718,15 @@ function resize() {
     }
 
     socket.emit('windowResized', { screenWidth: global.screenWidth, screenHeight: global.screenHeight });
+}
+
+function checkPing()
+{
+    var rand = Math.random();
+    if(rand%2 == 0) {
+        window.chat.checkLatency();
+        socket.emit('pingcheck');
+        console.log("checkping function");
+    }
+    else return Promise.delay(100).then(() => checkPing());
 }
