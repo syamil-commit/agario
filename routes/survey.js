@@ -6,7 +6,7 @@ var router = express.Router();
 
 
 const dbHostname = "c240g2-031327.wisc.cloudlab.us";
-const dbPort = 3000;
+const dbPort = 3002;
 const dbPath = "/db";
 
 QUESTIONS={
