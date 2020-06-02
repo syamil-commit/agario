@@ -37,7 +37,7 @@ QUESTIONS={
 /*app.get("/survey", (req, res) => {
     //res.sendFile("/../../views/index.pug");
     //res.header('Content-Type', 'text/html');
-    //res.sendFile(path.resolve('/Users/ahmad/agar.io-clone/views/test.html'));
+
     res.render('question', { title: 'Survey', hostname:req.params.hostname, l: req.params.l, ping:req.params.ping, totalTime:req.params.totalTime, questions:QUESTIONS});
     //res.end();
 });*/

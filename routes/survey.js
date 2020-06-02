@@ -5,7 +5,7 @@ var cors = require('cors');
 var router = express.Router();
 
 
-const dbHostname = "www.xdnfirst.xyz";
+const dbHostname = "c240g2-031327.wisc.cloudlab.us";
 const dbPort = 3000;
 const dbPath = "/db";
 
@@ -14,44 +14,34 @@ QUESTIONS={
 };
 
 
-/*router.get('', function(req, res){
-    console.log(req.params.l+','+req.params.ping);
-    res.render('question', { title: 'Survey', questions:QUESTIONS});
-});
-
-router.get('/', function(req, res){
-    console.log(req.params.l+','+req.params.ping);
-    res.render('question', { title: 'Survey', questions:QUESTIONS});
-});
-router.get('/survey', function(req, res){
-    console.log(req.params.l+','+req.params.ping);
-    res.render('question', { title: 'Survey', questions:QUESTIONS});
-});
-router.get(':ping/:l/:time', function(req, res){
-    console.log(req);
-    console.log(req.params);
-    res.render('question', { title: 'Survey', id: req.param.id, name:req.param.name, l: req.params.l, time:req.params.time, ping: req.param.ping, questions:QUESTIONS});
-});*/
-
-router.get('/:ping/:score/:totalTime', function(req, res){
+router.get('/:ping/:point/:totalTime', function(req, res){
     console.log(req.params.ping);
-    console.log(req.params.score);
+    console.log(req.params.point);
     console.log(req.params.totalTime);
     //console.log(req);
-    res.render('question', { title: 'Survey', ping:req.params.ping, score: req.params.score,  totalTime:req.params.totalTime, questions:QUESTIONS});
+    res.render('question', { title: 'Survey', ping:req.params.ping, point: req.params.point,  totalTime:req.params.totalTime, questions:QUESTIONS});
 });
 
-router.post('/:ping/:score/:totalTime', function(req, res){
-    var result = JSON.parse(JSON.stringify(req.body));
+router.post('/:ping/:point/:totalTime', function(req, res){
+    console.log('one');
+    console.log(req);
+    var result = {"ping": req.params.ping, "point": req.params.point, "remoteTime": new Date(), "clientIP":req.headers['x-forwarded-for'] || req.connection.remoteAddress, "agent":req.get('user-agent')};
+    //var result = JSON.parse(JSON.stringify(req.body));
+    //var result = JSON.parse((req.body).toString());
+    console.log(result);
+
+
+/*    result.ping = req.params.ping;
     result.score = req.params.score;
-    result.ping = req.params.ping;
     result.remoteTime = new Date();
     result.clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    result.agent = req.get('user-agent');
+    result.agent = req.get('user-agent');*/
+    console.log('two');
     // console.log(req);
     // console.log(req.get('user-agent'));
 
     var post_data = JSON.stringify(result);
+    console.log('three');
     var post_options = {
         hostname: dbHostname,
         port: dbPort,
