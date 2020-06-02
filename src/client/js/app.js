@@ -3,9 +3,13 @@ var ChatClient = require('./chat-client');
 var Canvas = require('./canvas');
 var global = require('./global');
 
+
 var playerNameInput = document.getElementById('playerNameInput');
 var socket;
 var reason;
+var clickCounter = 0;
+
+
 
 var debug = function(args) {
     if (console && console.log) {
@@ -32,12 +36,67 @@ function startGame(type) {
     }
     if (!global.animLoopHandle)
         animloop();
+
     socket.emit('respawn');
     window.chat.socket = socket;
     window.chat.registerFunctions();
     window.canvas.socket = socket;
     global.socket = socket;
+
+    //////
+    //window.chat.checkLatency();
 }
+
+//I added
+
+/*async function pingFinder(){
+    clickCounter++;
+    if (!socket) {
+        console.log("socket is not defined");
+        socket = io({query: "type=player"});
+        setupSocket(socket);
+        window.chat.socket = socket;
+    }
+    debug("running survey");
+    var test = await window.chat.checkLatency();
+    debug(socket.emit('pingcheck'));
+    return test;
+}*/
+
+function survey(){
+
+
+        clickCounter++;
+        if (!socket) {
+            console.log("socket is not defined");
+
+            socket = io({query: "type=player"});
+            setupSocket(socket);
+            window.chat.socket = socket;
+        }
+        //window.chat.socket = socket;
+        debug("running survey");
+        window.chat.checkLatency();
+        //debug('PingLATANCY2: '+ window.chat.addChatLine('-Ping'));
+        //setupSocket(socket);
+        debug(socket.emit('pingcheck'));
+        window.chat.checkLatency();
+        Promise.resolve(debug(socket.emit('pingcheck')));
+        //debug(window.chat.socket.emit('pingcheck'));
+        //debug('PingLATANCY3: '+ window.chat.addChatLine('ping'));
+
+        //setupSocket(socket);
+        //setupSocket(socket);
+
+        debug('PingLATANCY5: ' + global.pingLatency);
+        //window.open("http://localhost:3000/survey/"+Date.now() - global.startPingTime);
+        //socket.emit('survey');
+
+
+}
+
+
+// end of I added
 
 // Checks if the nick chosen contains valid alphanumeric characters (and underscores).
 function validNick() {
@@ -50,10 +109,16 @@ window.onload = function() {
 
     var btn = document.getElementById('startButton'),
         btnS = document.getElementById('spectateButton'),
-        nickErrorText = document.querySelector('#startMenu .input-error');
+        nickErrorText = document.querySelector('#startMenu .input-error'),
+        btnSvy =document.getElementById('surveyBotton');
 
     btnS.onclick = function () {
         startGame('spectate');
+    };
+
+    btnSvy.onclick = function(){
+        survey();
+        survey();
     };
 
     btn.onclick = function () {
@@ -160,6 +225,11 @@ function setupSocket(socket) {
         var latency = Date.now() - global.startPingTime;
         debug('Latency: ' + latency + 'ms');
         window.chat.addSystemLine('Ping: ' + latency + 'ms');
+
+        if(global.pingLatency > latency) {
+            global.pingLatency = latency;
+        }
+
     });
 
     // Handle error.
@@ -428,7 +498,7 @@ function drawPlayers(order) {
         graph.textBaseline = 'middle';
         graph.font = 'bold ' + fontSize + 'px sans-serif';
 
-        if (global.toggleMassState === 0) {
+        if (global.toggleMassState === 1) {
             graph.strokeText(nameCell, circle.x, circle.y);
             graph.fillText(nameCell, circle.x, circle.y);
         } else {
@@ -585,7 +655,8 @@ function gameLoop() {
         graph.fillRect(0, 0, global.screenWidth, global.screenHeight);
 
         graph.textAlign = 'center';
-        graph.fillStyle = '#FFFFFF';
+        graph.fillStyle = '#ffffff';
+
         graph.font = 'bold 30px sans-serif';
         if (global.kicked) {
             if (reason !== '') {

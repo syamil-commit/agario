@@ -7,6 +7,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var SAT = require('sat');
 var sql = require ("mysql");
+var path = require('path');
+
 
 // Import game settings.
 var c = require('../../config.json');
@@ -16,6 +18,45 @@ var util = require('./lib/util');
 
 // Import quadtree.
 var quadtree = require('simple-quadtree');
+
+
+///////////I added
+var path = require('path');
+var cookieParser = require('cookie-parser');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var surveyRouter = require("../../routes/survey");
+//console.log(__dirname);
+app.set('views', path.join(__dirname, "../../views"));
+app.set('view engine', 'pug');
+let QUESTIONS;
+QUESTIONS={
+    1: "1. Responsiveness: how responsive the game is"
+};
+app.get("/survey", (req, res) => {
+    //res.sendFile("/../../views/index.pug");
+    //res.header('Content-Type', 'text/html');
+    //res.sendFile(path.resolve('/Users/ahmad/agar.io-clone/views/test.html'));
+    res.render('question', { title: 'Survey', hostname:req.params.hostname, l: req.params.l, ping:req.params.ping, totalTime:req.params.totalTime, questions:QUESTIONS});
+    //res.end();
+});
+
+app.use('/survey', surveyRouter);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+var bodyParser = require('body-parser');
+var jsonParser = bodyParser.json();
+var urlencodeParser = bodyParser.urlencoded({ extended: false });
+app.use(urlencodeParser);
+app.use(jsonParser);
+
+
+
+/////////EDND OF I added
+
 
 //call sqlinfo
 var s = c.sqlinfo;
@@ -53,6 +94,8 @@ if(s.host !== "DEFAULT") {
 var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
 
 app.use(express.static(__dirname + '/../client'));
+
+
 
 function addFood(toAdd) {
     var radius = util.massToRadius(c.foodMass);
@@ -268,8 +311,18 @@ io.on('connection', function (socket) {
         target: {
             x: 0,
             y: 0
-        }
+        },
+        startTime: new Date().getTime()
     };
+
+    //I added
+    socket.on('survey', function () {
+        app.route(surveyRouter);
+        //res.render('question', { title: 'Survey', hostname:req.params.hostname, l: req.params.l, ping:req.params.ping, totalTime:req.params.totalTime, questions:QUESTIONS});
+    });
+
+
+    //
 
     socket.on('gotit', function (player) {
         console.log('[INFO] Player ' + player.name + ' connecting!');
@@ -307,6 +360,7 @@ io.on('connection', function (socket) {
             player.hue = Math.round(Math.random() * 360);
             currentPlayer = player;
             currentPlayer.lastHeartbeat = new Date().getTime();
+            currentPlayer.startTime = new Date().getTime();
             users.push(currentPlayer);
 
             io.emit('playerJoin', { name: currentPlayer.name });
@@ -478,6 +532,22 @@ io.on('connection', function (socket) {
 });
 
 function tickPlayer(currentPlayer) {
+    //console.log('Start Time'+currentPlayer.startTime);
+    if(c.finishScoreActiva == true){
+        if(currentPlayer.massTotal >= c.finishScore){
+            var finTime = new Date().getTime() - currentPlayer.startTime;
+            sockets[currentPlayer.id].emit('kick','You got score: '+currentPlayer.massTotal+ ' in '+ finTime+ ' ms');
+            sockets[currentPlayer.id].disconnect();
+        }
+    }
+    if(c.finishTimeActive == true){
+        if(new Date().getTime() - currentPlayer.startTime >= c.finishTime){
+            var finScore = currentPlayer.massTotal;
+            sockets[currentPlayer.id].emit('kick','Time is up and You got score: '+currentPlayer.massTotal+ ' in '+ c.finishTime+' ms');
+            sockets[currentPlayer.id].disconnect();
+        }
+    }
+
     if(currentPlayer.lastHeartbeat < new Date().getTime() - c.maxHeartbeatInterval) {
         sockets[currentPlayer.id].emit('kick', 'Last heartbeat received over ' + c.maxHeartbeatInterval + ' ago.');
         sockets[currentPlayer.id].disconnect();
@@ -746,3 +816,5 @@ var serverport = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || c.port
 http.listen( serverport, ipaddress, function() {
     console.log('[DEBUG] Listening on ' + ipaddress + ':' + serverport);
 });
+
+module.exports = app;

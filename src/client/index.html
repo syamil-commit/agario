@@ -3,7 +3,7 @@
 <head>
     <!-- Meta Properties -->
     <meta charset="UTF-8">
-    <title>Open Agar</title>
+    <title>Open Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <!-- CSS -->
     <link rel="stylesheet" href="css/main.css" />
@@ -12,6 +12,10 @@
     <audio id="spawn_cell" src="audio/spawn.mp3"></audio>
 </head>
 <body>
+
+
+
+
     <div id="gameAreaWrapper">
         <div id="status"><span class="title">Leaderboard</span></div>
         <div class="chatbox" id="chatbox">
@@ -24,15 +28,21 @@
         </div>
         <canvas tabindex="1" id="cvs"></canvas>
     </div>
+
+    <!--<div id="container" type="button" >Take Survey</div>-->
+    <button id="surveyBotton" a href="/survey">Take Survey</button>
+
+
     <div id="startMenuWrapper">
         <div id="startMenu">
-            <p>Open Agar</p>
+            <p>Open Game</p>
             <input type="text" tabindex="0" autofocus placeholder="Enter your name here" id="playerNameInput" maxlength="25" />
             <b class="input-error">Nick must be alphanumeric characters only!</b>
             <br />
             <a onclick="document.getElementById('spawn_cell').play();"><button id="startButton">Play</button></a>
             <button id="spectateButton">Spectate</button>
             <button id="settingsButton">Settings</button>
+            <!--<button id="surveyBotton2">Take Survey</button>-->
             <br />
             <div id="settings">
                 <h3>Settings</h3>

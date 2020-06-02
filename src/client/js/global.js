@@ -32,4 +32,7 @@ module.exports = {
     toggleMassState: 0,
     backgroundColor: '#f2fbff',
     lineColor: '#000000',
+
+    // For latency
+    pingLatency: 1000000,
 };
