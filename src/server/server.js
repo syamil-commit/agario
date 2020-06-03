@@ -21,6 +21,15 @@ var quadtree = require('simple-quadtree');
 
 
 ///////////I added
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+var bodyParser = require('body-parser');
+var jsonParser = bodyParser.json();
+var urlencodeParser = bodyParser.urlencoded({ extended: false });
+app.use(urlencodeParser);
+app.use(jsonParser);
+
 var path = require('path');
 var cookieParser = require('cookie-parser');
 

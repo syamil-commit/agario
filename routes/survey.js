@@ -15,33 +15,32 @@ QUESTIONS={
 
 
 router.get('/:ping/:point/:totalTime', function(req, res){
-    console.log(req.params.ping);
+    /*console.log(req.params.ping);
     console.log(req.params.point);
-    console.log(req.params.totalTime);
+    console.log(req.params.totalTime);*/
     //console.log(req);
     res.render('question', { title: 'Survey', ping:req.params.ping, point: req.params.point,  totalTime:req.params.totalTime, questions:QUESTIONS});
 });
 
 router.post('/:ping/:point/:totalTime', function(req, res){
-    console.log('one');
-    //console.log(req);
-    var result = {"ping": req.params.ping, "point": req.params.point, "remoteTime": new Date(), "clientIP":req.headers['x-forwarded-for'] || req.connection.remoteAddress, "agent":req.get('user-agent')};
-    //var result = JSON.parse(JSON.stringify(req.body));
-    //var result = JSON.parse((req.body).toString());
+
+    //var result = {"ping": req.params.ping, "point": req.params.point, "remoteTime": new Date(), "clientIP":req.headers['x-forwarded-for'] || req.connection.remoteAddress, "agent":req.get('user-agent')};
+    var result = JSON.parse(JSON.stringify(req.body));
     //console.log(result);
 
 
-/*    result.ping = req.params.ping;
-    result.score = req.params.score;
+    result.ping = req.params.ping;
+    result.point = req.params.point;
+    result.totalTime = req.params.totalTime;
     result.remoteTime = new Date();
     result.clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    result.agent = req.get('user-agent');*/
-    console.log('two');
+    result.agent = req.get('user-agent');
+    //console.log('two');
     // console.log(req);
     // console.log(req.get('user-agent'));
 
     var post_data = JSON.stringify(result);
-    console.log('three');
+    console.log(post_data);
     var post_options = {
         hostname: dbHostname,
         port: dbPort,
