@@ -4,8 +4,10 @@ var cors = require('cors');
 
 var router = express.Router();
 
+var c = require('../../config.json');
 
-const dbHostname = "c240g2-031327.wisc.cloudlab.us";
+
+const dbHostname = "c220g1-030812.wisc.cloudlab.us";
 const dbPort = 3002;
 const dbPath = "/db";
 

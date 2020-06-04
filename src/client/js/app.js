@@ -238,10 +238,10 @@ function setupSocket(socket) {
         var latency = Date.now() - global.startPingTime;
         debug('Latency: ' + latency + 'ms');
         window.chat.addSystemLine('Ping: ' + latency + 'ms');
-
-        if(global.pingLatency > latency) {
+        global.pingLatency = latency;
+/*        if(global.pingLatency > latency) {
             global.pingLatency = latency;
-        }
+        }*/
 
     });
 
