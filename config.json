@@ -43,5 +43,10 @@
       "password": "DEFAULT",
       "database": "DEFAULT",
       "debug": false
+    },
+    "mongoDBinfo":{
+        "dbHost": "c220g1-030812.wisc.cloudlab.us",
+        "dbPort": 3002,
+        "dbPath": "/db"
     }
 }

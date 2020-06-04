@@ -4,12 +4,13 @@ var cors = require('cors');
 
 var router = express.Router();
 
-var c = require('../../config.json');
+var c = require("../config.json");
+var dbinfo = c.mongoDBinfo;
 
 
-const dbHostname = "c220g1-030812.wisc.cloudlab.us";
-const dbPort = 3002;
-const dbPath = "/db";
+const dbHostname = dbinfo.dbHost;
+const dbPort = dbinfo.dbPort;
+const dbPath = dbinfo.dbPath;
 
 QUESTIONS={
     1: "1. Responsiveness: how responsive the game is"
@@ -42,7 +43,7 @@ router.post('/:ping/:point/:totalTime', function(req, res){
     // console.log(req.get('user-agent'));
 
     var post_data = JSON.stringify(result);
-    console.log(post_data);
+    //console.log(post_data);
     var post_options = {
         hostname: dbHostname,
         port: dbPort,
