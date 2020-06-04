@@ -18,7 +18,7 @@ and it should work now.
 
 ### Docker
 #### Build
-** Before start building: ** cp npm-shrinkwrap.json.bk npm-shrinkwrap.json
+**Before start building:** cp npm-shrinkwrap.json.bk npm-shrinkwrap.json
 docker build -t yourusername/repository-name .
 
 
@@ -29,7 +29,7 @@ docker run -p 3000:<listening_port_in_config.json i.e., 3000> --name agar -v /Pa
 
 for example, docker run -p 3000:3000 --name agar -v /home/agar.io-clone/config.json:/usr/src/app/config.json ahmadsepahi/agario:latest 
 
-** Note: ** config.json contains all required configuration such as listening_port, finishScore, finishTime, and survey database information. 
+**Note:** config.json contains all required configuration such as listening_port, finishScore, finishTime, and survey database information. 
 
 
 
