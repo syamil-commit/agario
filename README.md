@@ -1,6 +1,14 @@
 Agar.io Clone
 =============
 
+### Requirements
+- npm
+- gulp
+
+### RUN
+1-npm install  
+2-npm start
+
 If you faced the error "primordials is not defined", do following steps: 
 
 1- cp npm-shrinkwrap.json.bk npm-shrinkwrap.json  
