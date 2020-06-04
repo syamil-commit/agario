@@ -16,6 +16,20 @@ If you faced the error "primordials is not defined", do following steps:
 3- npm start      
 and it should work now.
 
+### Docker
+#### Build
+docker build -t yourusername/repository-name .
+
+
+#### PUll
+You can pull it by using "docker pull ahmadsepahi/agario:latest"
+#### RUN
+docker run -p 3000:<listening_port_in_config.json i.e., 3000> --name agar -v /PathToLocalConfigFile/config.json:/usr/src/app/config.json ahmadsepahi/agario or <yourusername/repository-name>
+
+for example, docker run -p 3000:3000 --name agar -v /home/agar.io-clone/config.json:/usr/src/app/config.json ahmadsepahi/agario:latest 
+
+##### Note: config.json contains all required configuration such as listening_port, finishScore, finishTime, and survey database information. 
+
 **CONTRIBUTOR WANTED: I'm really sorry for not have enough time to maintain this project. I'm looking for contributors who willing to keep this project going. If you feel happy to join. Please contact me via my Twitter: @huydotnet. Thank you so much!**
 
 [![GitHub Stars](https://img.shields.io/github/stars/huytd/agar.io-clone.svg)](https://github.com/huytd/agar.io-clone/stargazers)

@@ -544,7 +544,7 @@ io.on('connection', function (socket) {
 
 function tickPlayer(currentPlayer) {
     //console.log('Start Time'+currentPlayer.startTime);
-    if(c.finishScoreActiva == true){
+    if(c.finishScoreActive == true){
         if(currentPlayer.massTotal >= c.finishScore){
             var finTime = new Date().getTime() - currentPlayer.startTime;
             sockets[currentPlayer.id].emit('kick','You got score: '+currentPlayer.massTotal+ ' in '+ finTime+ ' ms', currentPlayer.massTotal, finTime);

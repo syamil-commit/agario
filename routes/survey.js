@@ -4,12 +4,15 @@ var cors = require('cors');
 
 var router = express.Router();
 
-var c = require("../config.json");
+var c = require('../config.json');
 var dbinfo = c.mongoDBinfo;
 
 
+/*const dbHostname = "c220g1-030812.wisc.cloudlab.us";
+const dbPort = 3002;
+const dbPath = "/db";*/
 const dbHostname = dbinfo.dbHost;
-const dbPort = dbinfo.dbPort;
+const dbPort = 3002;
 const dbPath = dbinfo.dbPath;
 
 QUESTIONS={
