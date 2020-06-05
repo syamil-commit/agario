@@ -19,6 +19,8 @@ and it should work now.
 ### Docker
 #### Build
 **Before start building:** cp npm-shrinkwrap.json.bk npm-shrinkwrap.json
+
+
 docker build -t yourusername/repository-name .
 
 

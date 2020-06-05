@@ -8,10 +8,10 @@ var playerNameInput = document.getElementById('playerNameInput');
 var socket;
 var reason;
 
-var pingInterval = 2000;
+var pingInterval = 200;
 var finScore=0;
 var finTime=0;
-
+var lastPing = 0;
 
 var debug = function(args) {
     if (console && console.log) {
@@ -234,14 +234,23 @@ $( "#split" ).click(function() {
 // socket stuff.
 function setupSocket(socket) {
     // Handle ping.
-    socket.on('pongcheck', function () {
-        var latency = Date.now() - global.startPingTime;
-        debug('Latency: ' + latency + 'ms');
-        window.chat.addSystemLine('Ping: ' + latency + 'ms');
-        global.pingLatency = latency;
-/*        if(global.pingLatency > latency) {
-            global.pingLatency = latency;
-        }*/
+    socket.on('pongcheck', function (cnt) {
+/*        console.log('app: ',cnt);
+        console.log('chat: ', global.cnt);*/
+        if(global.timeArray !== undefined && cnt in global.timeArray) {
+            //debug('TimeArraySize: ' + Object.keys(global.timeArray).length);
+            var latency = Date.now() - global.timeArray[cnt];
+            //debug('Latency: ' + latency + 'ms');
+            //window.chat.addSystemLine('Ping: ' + latency + 'ms');
+            //global.pingLatency = latency;
+            if (global.pingLatency > latency) {
+                global.pingLatency = latency;
+            }
+        }
+        else{
+            debug("error global time array");
+        }
+
 
     });
 
@@ -377,6 +386,14 @@ function setupSocket(socket) {
         console.log('score: '+score + ' and time: '+time);
         finScore = score;
         finTime = time;
+        document.getElementById("surveyBotton").style.visibility="visible";
+        if(Date.now() - global.gameStart > pingInterval ){
+        window.chat.checkLatency();
+        pingInterval *= 1.5;
+        //checkPing();
+        }
+        document.getElementById("surveyBotton").style.visibility="visible";
+
 
     });
 
@@ -436,9 +453,10 @@ function drawFireFood(mass) {
 }
 
 function drawPlayers(order) {
-    if(Date.now() - global.gameStart > pingInterval ){
+
+    if(Date.now() - lastPing > pingInterval && global.cnt < 20){
         window.chat.checkLatency();
-        pingInterval *= 1.5;
+        lastPing = Date.now();
         //checkPing();
     }
 
@@ -626,12 +644,23 @@ window.cancelAnimFrame = (function(handle) {
 })();
 
 function animloop() {
+/*    if(Date.now() - global.gameStart > pingInterval ){
+        window.chat.checkLatency();
+        pingInterval *= 1.5;
+        //checkPing();
+    }*/
     global.animLoopHandle = window.requestAnimFrame(animloop);
     gameLoop();
+
 }
 
 function gameLoop() {
 
+/*    if(Date.now() - global.gameStart > pingInterval ){
+        window.chat.checkLatency();
+        pingInterval *= 1.5;
+        //checkPing();
+    }*/
 
     if (global.died) {
         graph.fillStyle = '#333333';

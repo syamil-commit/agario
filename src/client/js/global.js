@@ -35,4 +35,6 @@ module.exports = {
 
     // For latency
     pingLatency: 1000000,
+    cnt: 0,
+    timeArray: {},
 };

@@ -1,5 +1,6 @@
 var global = require('./global');
 
+
 class ChatClient {
     constructor(params) {
         this.canvas = global.canvas;
@@ -19,6 +20,7 @@ class ChatClient {
             }
         });
         global.chatClient = this;
+
     }
 
     // TODO: Break out many of these GameControls into separate classes.
@@ -158,7 +160,10 @@ class ChatClient {
     checkLatency() {
         // Ping.
         global.startPingTime = Date.now();
-        this.socket.emit('pingcheck');
+        global.timeArray[global.cnt] =Date.now();
+        this.socket.emit('pingcheck', global.cnt);
+        global.cnt++;
+
     }
 
     toggleDarkMode() {

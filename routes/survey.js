@@ -8,12 +8,12 @@ var c = require('../config.json');
 var dbinfo = c.mongoDBinfo;
 
 
-/*const dbHostname = "c220g1-030812.wisc.cloudlab.us";
-const dbPort = 3002;
-const dbPath = "/db";*/
-const dbHostname = dbinfo.dbHost;
-const dbPort = 3002;
-const dbPath = dbinfo.dbPath;
+const dbHostname = "104.197.184.233";
+const dbPort = 3000;
+const dbPath = "/db";
+/*const dbHostname = dbinfo.dbHost;
+const dbPort = dbinfo.dbPort;
+const dbPath = dbinfo.dbPath;*/
 
 QUESTIONS={
     1: "1. Responsiveness: how responsive the game is"

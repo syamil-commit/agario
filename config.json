@@ -1,9 +1,9 @@
 {
     "host": "0.0.0.0",
-    "port": 3000,
+    "port": 80,
     "finishScoreActive": true,
-    "finishScore": 12,
-    "finishTimeActive": true,
+    "finishScore": 50,
+    "finishTimeActive": false,
     "finishTime" : 50000,
     "logpath": "logger.php",
     "foodMass": 1,
@@ -29,7 +29,7 @@
     "slowBase": 4.5,
     "logChat": 0,
     "networkUpdateFactor": 40,
-    "maxHeartbeatInterval": 5000,
+    "maxHeartbeatInterval": 10000,
     "foodUniformDisposition": true,
     "virusUniformDisposition": false,
     "newPlayerInitialPosition": "farthest",
@@ -45,8 +45,8 @@
       "debug": false
     },
     "mongoDBinfo":{
-        "dbHost": "c220g1-030812.wisc.cloudlab.us",
-        "dbPort": 3002,
+        "dbHost": "104.197.184.233",
+        "dbPort": 3000,
         "dbPath": "/db"
     }
 }

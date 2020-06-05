@@ -385,8 +385,8 @@ io.on('connection', function (socket) {
 
     });
 
-    socket.on('pingcheck', function () {
-        socket.emit('pongcheck');
+    socket.on('pingcheck', function (cnt) {
+        socket.emit('pongcheck', cnt);
     });
 
     socket.on('windowResized', function (data) {
