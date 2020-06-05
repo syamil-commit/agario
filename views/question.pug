@@ -23,8 +23,8 @@ html
                 }
                 // alert(document.getElementById("userId").value);
                 // console.log(document.getElementById("userId").value);
-                if ((document.getElementById("userId").value == ''))
-                    finished = false;
+                //if ((document.getElementById("userId").value == ''))
+                    //finished = false;
                 // window.alert("finished:" + finished);
                 if (!finished) {
                     window.alert("Please finish filling out the form before submission.");
@@ -39,7 +39,7 @@ html
     body
 
         h3=title
-        form(class="form-group" id="answer" action="/survey/"+ping+"/"+point+"/"+totalTime method="POST" onsubmit="return validateForm()" name="surveyform")
+        form(class="form-group" id="answer" action="/survey/"+playerName+"/"+ping+"/"+point+"/"+totalTime method="POST" onsubmit="return validateForm()" name="surveyform")
             each question,index in questions
                 div(class="card")
                     div(class="card-body")
@@ -56,9 +56,9 @@ html
                             label(class="form-check-label" for="inlineRadio10") 5 (Strongly satisfied)
             div(class="card")
                 div(class="card-body")
-                    p(class="lead") User ID
-                    input(type="string" class="form-control" name="userId" id="userId" placeholder="User ID")
-                    label(for="userId")
+                    //p(class="lead") User ID
+                    //input(type="string" class="form-control" name="userId" id="userId" placeholder="User ID")
+                    //label(for="userId")
             div
                 button(type="submit" class="btn btn-primary") Submit
 

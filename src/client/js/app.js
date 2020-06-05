@@ -75,7 +75,7 @@ function startGame(type) {
 
 function survey(){
 
-    window.open("/survey/"+global.pingLatency+"/"+finScore+"/"+finTime, "_self");
+    window.open("/survey/"+global.playerName+"/"+global.pingLatency+"/"+finScore+"/"+finTime, "_self");
 
         if (!socket) {
             console.log("socket is not defined");

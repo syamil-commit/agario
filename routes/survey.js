@@ -20,21 +20,21 @@ QUESTIONS={
 };
 
 
-router.get('/:ping/:point/:totalTime', function(req, res){
+router.get('/:playerName/:ping/:point/:totalTime', function(req, res){
     /*console.log(req.params.ping);
     console.log(req.params.point);
     console.log(req.params.totalTime);*/
     //console.log(req);
-    res.render('question', { title: 'Survey', ping:req.params.ping, point: req.params.point,  totalTime:req.params.totalTime, questions:QUESTIONS});
+    res.render('question', { title: 'Survey', playerName: req.params.playerName, ping:req.params.ping, point: req.params.point,  totalTime:req.params.totalTime, questions:QUESTIONS});
 });
 
-router.post('/:ping/:point/:totalTime', function(req, res){
+router.post('/:playerName/:ping/:point/:totalTime', function(req, res){
 
     //var result = {"ping": req.params.ping, "point": req.params.point, "remoteTime": new Date(), "clientIP":req.headers['x-forwarded-for'] || req.connection.remoteAddress, "agent":req.get('user-agent')};
     var result = JSON.parse(JSON.stringify(req.body));
     //console.log(result);
 
-
+    result.userId = req.params.playerName;
     result.ping = req.params.ping;
     result.point = req.params.point;
     result.totalTime = req.params.totalTime;
